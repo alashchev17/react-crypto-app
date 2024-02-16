@@ -1,4 +1,4 @@
-import { Divider, Flex, Layout, Typography } from "antd";
+import { Flex, Layout, Typography } from "antd";
 import { useCrypto } from "../../context/crypto-context";
 import PortfolioChart from "../PortfolioChart";
 import AssetsTable from "../AssetsTable";

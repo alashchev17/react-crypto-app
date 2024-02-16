@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Button,
-  DatePicker,
-  Divider,
-  Form,
-  Input,
-  InputNumber,
-  Modal,
-} from "antd";
+import { DatePicker, Divider, Form, InputNumber, Modal } from "antd";
 import { useCrypto } from "../context/crypto-context";
 import CoinInfo from "./CoinInfo";
 
