@@ -16,8 +16,6 @@ export function CryptoContextProvider({ children }) {
   function mapAssets(assets, result) {
     return assets.map((asset) => {
       const coin = result.find((c) => c.id === asset.id);
-      console.log("coin: ", coin);
-      console.log("asset: ", asset);
       return {
         ...asset,
         grow: asset.price < coin.price,
@@ -32,11 +30,9 @@ export function CryptoContextProvider({ children }) {
   }
   async function preload() {
     const { result } = await fetchCrypto();
-    console.log(result.find((c) => c.id === "worldcoin-wld"));
     const storedAssets = JSON.parse(localStorage.getItem("assets"));
     // Load assets from localStorage
     if (storedAssets && storedAssets.length) {
-      console.log("storedAssets: ", storedAssets);
       setAssets(mapAssets(storedAssets, result));
       setCrypto(result);
       setLoading(false);
