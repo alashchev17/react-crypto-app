@@ -1,5 +1,3 @@
-import { cryptoAssets } from "./data";
-
 export function fetchCrypto() {
   // return new Promise((resolve) => {
   //   setTimeout(() => {
@@ -25,12 +23,4 @@ export function fetchCrypto() {
       console.error("Error:", err);
       return null;
     });
-}
-
-export function fetchAssets() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(cryptoAssets);
-    }, 1);
-  });
 }

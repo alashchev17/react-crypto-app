@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { fetchCrypto, fetchAssets } from "../api";
+import { fetchCrypto } from "../api";
 import { percentDifference } from "../utils";
 
 const CryptoContext = createContext({
@@ -16,38 +16,40 @@ export function CryptoContextProvider({ children }) {
   function mapAssets(assets, result) {
     return assets.map((asset) => {
       const coin = result.find((c) => c.id === asset.id);
+      console.log("coin: ", coin);
+      console.log("asset: ", asset);
       return {
+        ...asset,
         grow: asset.price < coin.price,
         growPercent: percentDifference(asset.price, coin.price),
         totalAmount: asset.amount * coin.price,
         totalProfit: asset.amount * coin.price - asset.amount * asset.price,
         spentAmount: asset.amount * asset.price,
         name: coin.name,
-        ...asset,
+        price: coin.price,
       };
     });
   }
-
   async function preload() {
     const { result } = await fetchCrypto();
+    console.log(result.find((c) => c.id === "worldcoin-wld"));
     const storedAssets = JSON.parse(localStorage.getItem("assets"));
     // Load assets from localStorage
     if (storedAssets && storedAssets.length) {
-      console.log(storedAssets);
-      setAssets(storedAssets);
+      console.log("storedAssets: ", storedAssets);
+      setAssets(mapAssets(storedAssets, result));
       setCrypto(result);
       setLoading(false);
     } else {
-      const assets = await fetchAssets();
-      setAssets(mapAssets(assets, result));
-      localStorage.setItem("assets", JSON.stringify(mapAssets(assets, result)));
       setCrypto(result);
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    preload();
+    const intervalId = setInterval(preload, 5000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   function addAsset(newAsset) {
